@@ -2,7 +2,9 @@ from scrapy import Spider, Request
 from yeastract.items import YeastractItem
 import pandas as pd
 
+
 url_stub = "http://www.yeastract.com/view.php?existing=go&orfname="
+
 
 class Yeastract_Spider(Spider):
     name = "yeastract"
@@ -16,6 +18,7 @@ class Yeastract_Spider(Spider):
 
     def parse(self, response):
 
+        #sysname = ""
         proteinname = response.xpath('//td[@property="yontology:proteinName_"]/text()').extract_first()
         description = response.xpath('//td[@property="yontology:description_"]/text()').extract_first()
 
@@ -53,9 +56,11 @@ class Yeastract_Spider(Spider):
         print("FINISHED")
 
         item = YeastractItem()
+
         item["proteinname"] = proteinname
         item["description"] = description
         item["go_BioProc"] = go_BioProc
         item["go_MolFunc"] = go_MolFunc
         item["go_CellComp"] = go_CellComp
+        #print('item: ', item)
         yield item
